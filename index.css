@@ -1,0 +1,26 @@
+.col {
+    padding-left: 30px;
+    background-color: aquamarine;
+    margin: 5%;
+}
+
+.btn-custom-green {
+    background: #21A957;
+    color: #fff;
+}
+
+.inner-login {
+    margin: 80px auto;
+    width: 35%;
+}
+
+#footer {
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    height: 5%;
+    width: 100%;
+    background-color: grey;
+    color: white;
+    text-align: center;
+}
