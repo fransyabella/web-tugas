@@ -94,7 +94,7 @@ if ( isset($_POST['register'])) {
         ?>
             <div class="alert alert-success" role="alert">Register success, try login </div>
         <?php
-        header("location:loginuser.php");
+        header("location:login.php");
         }}
 if ($message != ""){
     

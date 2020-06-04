@@ -46,7 +46,6 @@
         </div>
     </nav>
 
-
     <div class="row" id="body-row">
         <div id="sidebar-container" class="sidebar-expanded d-none d-md-block">
             <ul class="list-group">
@@ -93,36 +92,61 @@
                 <div class="logo-login">
                     <em class="glyphicon glyphicon-user"></em>
                 </div>
-                <form action="" class="inner-login" method="post">
+                <form action="" class="inner-login" method="post"enctype="multipart/form-data">
                     <h3 class="text-center title-login">Add product</h3>
                         <div class="form-group">
-                            <input type="text" class="form-control" name="username" placeholder="Username">
+                            <input type="text" class="form-control" name="productname" placeholder="Nama Product">
                         </div>
 
                         <div class="form-group">
-                            <input type="password" class="form-control" name="password" placeholder="Password">
+                            <input type="text" class="form-control" name="category" placeholder="Category">
                         </div>
 
                         <div class="form-group">
-                            <input type="password" class="form-control" name="password" placeholder="Password">
+                            <input type="text" class="form-control" name="price" placeholder="Price">
                         </div>
-
-            <input type="submit" class="btn btn-block btn-custom-green" value="LOGIN" name="login" />
+                        
+                        <input type="file" class="form-control" name="img" >
+                        <p><input type="submit" value="Add new" name="insert"/></p>
+        
             
-            <div class="text-center forget">
-                <p>Do you haven't account yet? <a href="#">Register First</a></p>
-
+                </form>
             </div>
-        </form>
-    </div>
-</div>
+        </div>
 
 
 
+        <?php
+require_once "pdo.php";
+if (isset($_POST['insert']) && isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['img'])){
 
+$img = $_FILES['img']['name'];
+$tmp = $_FILES['img']['tmp_name'];
+// Rename nama fotonya dengan menambahkan tanggal dan jam upload
+$fotobaru = $img.".png";
+// Set path folder tempat menyimpan fotonya
+$path = "images/".$fotobaru;
+// Proses upload
+if(move_uploaded_file($tmp, $path)){ // Cek apakah gambar berhasil diupload atau tidak
+  // Proses simpan ke Database
+  $sql = "INSERT INTO products ( product_name, category, price, img ) 
+            VALUES (:product_name, :category, :price, :img)";
+  echo("<pre>\n".$sql."\n</pre>\n");
+  $stmt = $pdo->prepare($sql);
+  $stmt->execute(array(
+  ':product_name' => $_POST['product_name'],
+  ':category'=>$_POST['category'],
+  ':price' =>  $_POST['price'],
+  ':img'=> '$fotobaru'));
 
-
-
+  echo '<div class="alert alert-success" role="alert">Add product success </div>';
+  
+}else{
+  // Jika gambar gagal diupload, Lakukan :
+  echo "Maaf, Gambar gagal untuk diupload.";
+}
+}
+?>
         <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

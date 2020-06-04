@@ -1,6 +1,7 @@
 <?php
 require_once "pdo.php";
-
+$stmt = $pdo->query("SELECT product_id, product_name, category, price, img FROM products");
+$rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
 <!doctype html>
@@ -105,21 +106,25 @@ require_once "pdo.php";
                         <th scope="col">Id </th>
                         <th scope="col">Name Product</th>
                         <th scope="col">Category</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Image</th>
                     </tr>
                 </thead>
-                <tbody>
     <?php
-
-    /*
+        foreach ( $rows as $row ) {
+    ?>  
+                <tbody>
                 <tr>
                         <td><?=($row['product_id'])?></td>
                         <td><?=($row['product_name'])?></td>
                         <td><?=($row['category'])?></td>
-                        <td><?=($row['image'])?></td>
-                </tr>  */
-                ?>             
+                        <td><?=($row['price'])?></td>
+                        <td><img src="images/<?=($row['img'])?>" width='100'height='100'></td> 
+                </tr>  
                 </tbody>
+    <?php
+        }
+    ?>
             </table>
         </div>
     </div>
