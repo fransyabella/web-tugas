@@ -1,6 +1,6 @@
 <?php
 require_once "pdo.php";
-$stmt = $pdo->query("SELECT product_id, product_name, category, price, img FROM products");
+$stmt = $pdo->query("SELECT product_id, product_name, color, size, price, img FROM products");
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -65,18 +65,20 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     <?php
         foreach ( $rows as $row ) {
     ?> 
-        <div class="col-md-4">
-				<div class="bg-primary text-center text-white">.col-md-4</div>
-                <img src="images/<?=($row['img'])?>" width='100'height='100'>
+        <div class="col-md-4 mt-5">
+                    <img src="images/<?=($row['img'])?>" width='100'height='100'>
+                    <br>
                     <?=($row['product_name'])?>
                     <br>
-                     <?=($row['category'])?>
+                    <?=($row['color'])?>
                     <br>
-                    <?=($row['price'])?></td>
+                    <?=($row['size'])?>
+                    <br>
+                    Rp.<?=($row['price'])?></td>
                     <br>
                     <form action="transaction.php?buy=<?php echo $row['product_id'];?>" method="post">
                         <input type="hidden" name="user_id" value="<?=$row['product_id']?>">
-                        <input type="submit" value="Buy" name="buy">
+                        <input type="submit" class="btn btn-success"value="Buy" name="buy">
                      </form>
         </div>
         <?php

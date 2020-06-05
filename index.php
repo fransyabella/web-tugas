@@ -31,7 +31,7 @@ session_start()
                         <a class="nav-link" href="product.php">Product</a>
                     </li>
             <?php
-                if (isset($_SESSION['username'])){
+                if (isset($_SESSION['user_id']) && isset($_SESSION['username'])){
                     ?>
                     <li class="nav-item">
                         <a class="nav-link" href="history.php">History Transaction</a>
@@ -41,29 +41,29 @@ session_start()
                     </li>
                     </ul>
                     <?php
-                } else {
-                    ?>
-                        </ul>
-                    <?php
-                }
+                } 
             ?> 
-               
-
+               </ul>
                 <form class="form-inline my-2 my-lg-0">
                     <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
                 </form>
 
 <?php
-    if (isset($_SESSION['username'])){
+    if (isset($_SESSION['user_id'])){
         ?>
             <ul class="navbar-nav ">
                     <li class="nav-item ">
                         <a class="nav-link" href="logout.php">Logout<span class="sr-only">(current)</span></a>
                     </li>
-                </ul>
+            </ul>
+            <ul class="navbar-nav ">
+                    <li class="nav-item ">
+                        <a class="nav-link" href="setting.php">Setting<span class="sr-only">(current)</span></a>
+                    </li>
+            </ul>
         <?php
-    } else if (!isset($_SESSION['username'])){
+    } else if (!isset($_SESSION['user_id'])){
         ?>
                 <ul class="navbar-nav ">
                     <li class="nav-item ">

@@ -82,7 +82,7 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
                     </div>
                 </a>
                 <div id='submenu2' class="collapse sidebar-submenu">
-                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                    <a href="settingadmin.php" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">Settings</span>
                     </a>
                     <a href="logoutadmin.php" class="list-group-item list-group-item-action bg-dark text-white">

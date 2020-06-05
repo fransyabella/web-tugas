@@ -27,12 +27,7 @@
                     <li class="nav-item ">
                         <a class="nav-link" href="product.html">Product</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="history.html">History Transaction</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="transaction.html">Transaction</a>
-                    </li>
+                   
                 </ul>
 
                 <form class="form-inline my-2 my-lg-0">

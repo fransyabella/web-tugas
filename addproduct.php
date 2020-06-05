@@ -1,4 +1,47 @@
+<?php
 
+require_once "pdo.php";
+$message='';
+$failed='';
+$error='';
+if (isset($_POST['insert'])) {
+    if ( isset($_FILES['img']) && isset($_POST['product_name']) && isset($_POST['color'])&& isset($_POST['size'])  && ($_POST['price'])){
+        $img = $_FILES['img']['name'];
+        $tmp = $_FILES['img']['tmp_name'];
+        $imagesize=$_FILES['img']['size'];
+        $valid_extensions = array('jpeg','jpg','png','pdf');
+        $ext=explode('.',$img);
+        $extfix=strtolower(end($ext));
+
+        if (!in_array($extfix, $valid_extensions)){
+            $failed = "Failed! Your file extension is " .$extfix. ". Please input only jpeg, jpg, png or pdf file";
+        }
+        else if($imagesize > 1048576){
+            $failed ="Failed! Your file size : " .$imagesize. " is too big. File size required only less than 1 Mb";
+        }
+    
+        else if (move_uploaded_file($tmp, 'images/' . $img)){
+            $sql = "INSERT INTO products (product_name, color, size, price, img)
+                    VALUES (:product_name, :color, :size, :price, :img)";
+            $stmt = $pdo->prepare($sql);
+            $stmt->execute(array(
+                ':product_name' => $_POST['product_name'],
+                ':color'=>$_POST['color'],
+                ':size'=>$_POST['size'],
+                ':price' =>  $_POST['price'],
+                ':img'=> $img));
+            $message = "Data succesfully add!";
+        }
+        else{
+            $error="Failed to move files";
+        }
+    }
+    else{
+        $error="All fields are required";
+    }
+}
+
+?>
 <!doctype html>
 <html lang="en">
 
@@ -14,6 +57,7 @@
 </head>
 
 <body>
+
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
 
         <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
@@ -34,10 +78,10 @@
 
                 <li class="nav-item dropdown d-sm-block d-md-none">
                     <a class="nav-link dropdown-toggle" href="#" id="smallerscreenmenu" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-            Menu
-          </a>
+                    Menu
+                    </a>
                     <div class="dropdown-menu" aria-labelledby="smallerscreenmenu">
-                        <a class="dropdown-item" href="admin.html">Dashboard</a>
+                        <a class="dropdown-item" href="admin.php">Dashboard</a>
                         <a class="dropdown-item" href="#">Profile</a>
                     </div>
                 </li>
@@ -76,7 +120,7 @@
                     </div>
                 </a>
                 <div id='submenu2' class="collapse sidebar-submenu">
-                    <a href="#" class="list-group-item list-group-item-action bg-dark text-white">
+                    <a href="settingadmin.php" class="list-group-item list-group-item-action bg-dark text-white">
                         <span class="menu-collapsed">Settings</span>
                     </a>
                     <a href="logoutadmin.php" class="list-group-item list-group-item-action bg-dark text-white">
@@ -87,66 +131,57 @@
             </ul>
         </div>
         <!-- End Sidebar -->
-        <div class="col-md-4 col-md-offset-4 form-login"></div>
-            <div class="outter-form-login">
-                <div class="logo-login">
-                    <em class="glyphicon glyphicon-user"></em>
-                </div>
-                <form action="" class="inner-login" method="post"enctype="multipart/form-data">
-                    <h3 class="text-center title-login">Add product</h3>
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="productname" placeholder="Nama Product">
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="category" placeholder="Category">
-                        </div>
-
-                        <div class="form-group">
-                            <input type="text" class="form-control" name="price" placeholder="Price">
-                        </div>
-                        
-                        <input type="file" class="form-control" name="img" >
-                        <p><input type="submit" value="Add new" name="insert"/></p>
         
-            
+        <div class="col-md-4 ml-5 mt-5 col-md-offset-4 form-login">
+        <?php
+        if ($message != ""){
+            echo '<div class="alert alert-success" role="alert">' .$message.'</div>';
+        }
+        else if ($error != ""){
+            echo '<div class="alert alert-danger" role="alert">' .$error.'</div>';
+        }
+        else if ($failed != ""){
+            echo '<div class="alert alert-danger" role="alert">' .$failed.'</div>';
+        }
+        ?>
+            <div class="ml-5 outter-form-login">
+                
+                <form method="post" class="inner-login" action="" enctype="multipart/form-data">
+                    <h3 class="text-center title-login">Add Product</h3>
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="product_id">
+                    </div>
+
+                    <div class="form-group">
+                        <input type="hidden" class="form-control" name="user_id" ></p>
+                    </div>
+                    <p>Name
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="product_name" ></p>
+                    </div>
+                    <p>Color
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="color"></p>
+                    </div>
+                    <p>Size
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="size"></p>
+                    </div>
+                    <p>Price
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="price"></p>
+                    </div>
+                    <p>Foto
+                    <div class="form-group">
+                    <input type="file" name="img"accept="*/image"></p>
+                    </div>
+                    <p><input type="submit" class="btn btn-primary"  value="Add new" name="insert"/></p>
+        
                 </form>
             </div>
         </div>
+       
 
-
-
-        <?php
-require_once "pdo.php";
-if (isset($_POST['insert']) && isset($_POST['product_name']) && isset($_POST['price']) && isset($_POST['img'])){
-
-$img = $_FILES['img']['name'];
-$tmp = $_FILES['img']['tmp_name'];
-// Rename nama fotonya dengan menambahkan tanggal dan jam upload
-$fotobaru = $img.".png";
-// Set path folder tempat menyimpan fotonya
-$path = "images/".$fotobaru;
-// Proses upload
-if(move_uploaded_file($tmp, $path)){ // Cek apakah gambar berhasil diupload atau tidak
-  // Proses simpan ke Database
-  $sql = "INSERT INTO products ( product_name, category, price, img ) 
-            VALUES (:product_name, :category, :price, :img)";
-  echo("<pre>\n".$sql."\n</pre>\n");
-  $stmt = $pdo->prepare($sql);
-  $stmt->execute(array(
-  ':product_name' => $_POST['product_name'],
-  ':category'=>$_POST['category'],
-  ':price' =>  $_POST['price'],
-  ':img'=> '$fotobaru'));
-
-  echo '<div class="alert alert-success" role="alert">Add product success </div>';
-  
-}else{
-  // Jika gambar gagal diupload, Lakukan :
-  echo "Maaf, Gambar gagal untuk diupload.";
-}
-}
-?>
         <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

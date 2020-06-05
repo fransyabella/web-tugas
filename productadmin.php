@@ -1,6 +1,6 @@
 <?php
 require_once "pdo.php";
-$stmt = $pdo->query("SELECT product_id, product_name, category, price, img FROM products");
+$stmt = $pdo->query("SELECT product_id, product_name, color, size, price, img FROM products");
 $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 ?>
 
@@ -99,13 +99,13 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
         <!-- MAIN -->
         
-        <div class="col">
+        <div class="col mt-5 ml-5 mr-5">
             <table class="table">
                 <thead class="thead-light">
                     <tr>
-                        <th scope="col">Id </th>
                         <th scope="col">Name Product</th>
-                        <th scope="col">Category</th>
+                        <th scope="col">Color</th>
+                        <th scope="col">Size</th>
                         <th scope="col">Price</th>
                         <th scope="col">Image</th>
                     </tr>
@@ -115,9 +115,9 @@ $rows = $stmt->fetchAll(PDO::FETCH_ASSOC);
     ?>  
                 <tbody>
                 <tr>
-                        <td><?=($row['product_id'])?></td>
                         <td><?=($row['product_name'])?></td>
-                        <td><?=($row['category'])?></td>
+                        <td><?=($row['color'])?></td>
+                        <td><?=($row['size'])?></td>
                         <td><?=($row['price'])?></td>
                         <td><img src="images/<?=($row['img'])?>" width='100'height='100'></td> 
                 </tr>  

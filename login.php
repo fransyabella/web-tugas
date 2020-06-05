@@ -27,12 +27,7 @@
                     <li class="nav-item ">
                         <a class="nav-link" href="product.php">Product</a>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="history.php">History Transaction</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="transaction.php">Transaction</a>
-                    </li>
+                   
                 </ul>
 
                 <form class="form-inline my-2 my-lg-0">
@@ -77,16 +72,16 @@ session_start();
                         if($count > 0)  {  
                             $_SESSION["username"] = $_POST["username"];  
                             header("location:admin.php"); 
-                            return;
+                            
                         }  
                         else  {  
                             ?>
-                            <div class="alert alert-warning" role="alert">Can't login, please try again</div>
+                            <div class="alert alert-warning" role="alert">Failed to login, check your username and password again!</div>
                             <?php
                          }
                     }
 			   
-			    else {
+			    else  {
 				    $query = "SELECT * FROM users WHERE username = :username AND password = :password"; 
                     $statement = $pdo->prepare($query);  
                     $statement->execute(  
@@ -97,11 +92,12 @@ session_start();
                     if($count > 0)  
                     {  
                         $_SESSION["username"] = $_POST["username"];  
+                        $_SESSION['user_id'] = $_POST["user_id"];
                         header("location:index.php");  
                     }  
                     else  
                     {  ?>
-                        <div class="alert alert-danger" role="alert">Can't login, please try again</div>
+                        <div class="alert alert-danger" role="alert">Failed to login, check your username and password again!</div>
                         <?php } 
         
             } }
@@ -122,6 +118,10 @@ session_start();
         </div>
         <form action="" class="inner-login" method="post">
             <h3 class="text-center title-login">Login Member</h3>
+
+            <div class="form-group">
+                <input type="hidden" class="form-control" name="user_id">
+            </div>
 
             <div class="form-group">
                 <input type="text" class="form-control" name="username" placeholder="Username">
